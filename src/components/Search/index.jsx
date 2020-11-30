@@ -8,7 +8,16 @@ export default class Search extends Component {
       const {keyWord} = this
 
       this.props.updateAppState({isLoading:true,isFirst:false})
-      axios.get(`http://localhost:3000/search/users?q=${keyWord.value}`)
+      axios.get(`http://localhost:3000/search/users?q=${keyWord.value}`).then(
+        response => {
+          console.log('成功了',response.data);
+          this.props.updateAppState({isLoading:false,users:response.data.items})
+        },
+        error => {
+          console.log('失败了', error);
+          this.props.updateAppState({isLoading:false,errorMsg:error.message})
+        }
+      )
     }
 
 
